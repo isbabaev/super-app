@@ -18,9 +18,12 @@
   },
   "homepage": "https://github.com/isbabaev/super-app#readme",
   "dependencies": {
-    "jsonwebtoken": "^8.5.1"
+    "dotenv": "^16.0.2",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.8.0"
   },
   "devDependencies": {
-    "@types/jsonwebtoken": "^8.5.9"
+    "@types/jsonwebtoken": "^8.5.9",
+    "@types/pg": "^8.6.5"
   }
 }
