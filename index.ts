@@ -7,4 +7,6 @@ import dotenv from 'dotenv';
   
   await client.connect().then(() => console.log('Connection to database established'));
   createServer();
-})();
+})().catch(error => {
+  console.log('An error has been occured', error);
+});
