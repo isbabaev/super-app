@@ -1,6 +1,6 @@
 import { IncomingMessage, ServerResponse } from "node:http";
 
-export type Handler = (
+export type Controller = (
   request: IncomingMessage,
   response: ServerResponse
 ) => Promise<void> | void;
