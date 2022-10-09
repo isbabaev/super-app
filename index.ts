@@ -1,11 +1,15 @@
 import { createServer } from "./api/server";
-import { client } from "./db/client";
+import { DbClient } from "./db/client";
 import dotenv from 'dotenv';
 
 (async () => {
-  dotenv.config();
+  dotenv.config(); // TODO don't use dotenv
   
-  await client.connect().then(() => console.log('Connection to database established'));
+  await DbClient.createClient().connect();
+  console.log('Connection to database established');
+  await DbClient.runMigrations();
+  console.log('Migrations have been performed');
+
   createServer();
 })().catch(error => {
   console.log('An error has been occured', error);

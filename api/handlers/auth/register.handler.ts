@@ -1,6 +1,6 @@
 import { Handler } from "../../interfaces";
 import { IncomingMessage, ServerResponse } from "node:http";
-import { client } from '../../../db/client';
+import { DbClient } from '../../../db/client';
 
 // TODO rename to controller
 export const registerHandler: Handler = async function (
