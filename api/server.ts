@@ -1,5 +1,6 @@
 import http from "node:http";
 import { routes } from "./routes";
+import("./controllers");
 
 export function createServer() {
   const server = http.createServer(async (request, response) => {
