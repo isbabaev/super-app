@@ -1,3 +1,8 @@
 export class UserEntity {
-  constructor(readonly login: string, readonly password: string) {}
+  constructor(
+    readonly firstName: string,
+    readonly lastName: string,
+    readonly email: string,
+    readonly password: string
+  ) {}
 }

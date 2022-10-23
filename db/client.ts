@@ -2,6 +2,7 @@ import { Client } from "pg";
 import fs from "fs";
 import path from "path";
 
+// TODO move to engine directory and create an interface
 export namespace DbClient {
   let client: Client | undefined;
 
