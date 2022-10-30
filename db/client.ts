@@ -6,14 +6,14 @@ import path from "path";
 export namespace DbClient {
   let client: Client | undefined;
 
-  export function createClient() {
+  function createClient() {
     client = new Client(process.env.DB_CONNECTION_STRING);
     return client;
   }
 
   export function getClient(): Client {
     if (client === undefined) {
-      throw new Error();
+      return createClient();
     }
     return client;
   }

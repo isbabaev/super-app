@@ -1,8 +1,9 @@
 import http from "node:http";
-import { routes } from "./routes";
-import("./controllers");
+import { routes, createRoutes } from "./routes";
 
-export function createServer() {
+export function createServer(controllers: unknown[]) {
+  createRoutes(controllers);
+
   const server = http.createServer(async (request, response) => {
     if (request.method === undefined || request.url === undefined) {
       response.statusCode = 504;
@@ -18,7 +19,8 @@ export function createServer() {
       return;
     }
 
-    await handler(request, response);
+    const { controller, method } = handler;
+    await controller[method].call(controller, request, response);
   });
 
   server.listen(process.env.SERVER_PORT, () => {
