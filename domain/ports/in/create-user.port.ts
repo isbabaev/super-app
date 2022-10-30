@@ -1,5 +1,7 @@
+import { Id } from "../../value-objects/id";
+
 export interface ICreateUserPort {
-  call(params: ICreateUser): Promise<void>;
+  call(params: ICreateUser): Promise<Id>;
 }
 
 export interface ICreateUser {
