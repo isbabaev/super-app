@@ -10,10 +10,11 @@ export class AuthController {
   @Post("/api/auth/register")
   async register(request: IncomingMessage, response: ServerResponse) {
     const body = await parseBody<IRegisterBody>(request);
-    const userId = await this.createUserPort.call(body);
+    
+    const user = await this.createUserPort.call(body);
 
     response.statusCode = 201;
-    response.write(JSON.stringify({ id: userId.value }));
+    response.write(JSON.stringify({ id: user.id.value }));
     response.end();
   }
 }

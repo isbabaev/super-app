@@ -1,10 +1,10 @@
-import { Id } from "../../value-objects/id";
+import { UserEntity } from "../../entities/user.entity";
 
 export interface ICreateUserPort {
-  call(params: ICreateUser): Promise<Id>;
+  call(params: IParams): Promise<UserEntity>;
 }
 
-export interface ICreateUser {
+export interface IParams {
   firstName: string;
   lastName: string;
   email: string;
