@@ -4,11 +4,11 @@ import { Post } from "../decorators/post";
 import { IRegisterBody } from "../interfaces/auth.interfaces";
 import { parseBody } from "./utils";
 
-export class AuthController {
+export class UsersController {
   constructor(readonly createUserPort: ICreateUserPort) {}
 
-  @Post("/api/auth/register")
-  async register(request: IncomingMessage) {
+  @Post("/api/users")
+  async createUser(request: IncomingMessage) {
     const body = await parseBody<IRegisterBody>(request);
     
     const user = await this.createUserPort.call(body);
