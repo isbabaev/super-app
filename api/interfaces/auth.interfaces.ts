@@ -1,6 +1,4 @@
-export interface IRegisterBody {
-  firstName: string;
-  lastName: string;
+export interface ILogInBody {
   email: string;
   password: string;
 }

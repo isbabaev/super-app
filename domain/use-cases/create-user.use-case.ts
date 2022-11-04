@@ -6,6 +6,7 @@ export class CreateUserUseCase implements ICreateUserPort {
   constructor(private readonly CreateUserInStorage: ICreateUserInStoragePort) {}
 
   async call(params: IParams): Promise<UserEntity> {
+    // TODO throw error if user already created
     const id = await this.CreateUserInStorage.call(params);
     return new UserEntity(
       id,

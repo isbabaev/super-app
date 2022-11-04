@@ -1,7 +1,7 @@
-import { IncomingMessage, ServerResponse } from "node:http";
+import { IncomingMessage } from "node:http";
 import { ICreateUserPort } from "../../domain/ports/in/create-user.port";
 import { Post } from "../decorators/post";
-import { IRegisterBody } from "../interfaces/auth.interfaces";
+import { ICreateUserBody } from "../interfaces/users.interfaces";
 import { parseBody } from "./utils";
 
 export class UsersController {
@@ -9,7 +9,7 @@ export class UsersController {
 
   @Post("/api/users")
   async createUser(request: IncomingMessage) {
-    const body = await parseBody<IRegisterBody>(request);
+    const body = await parseBody<ICreateUserBody>(request);
     
     const user = await this.createUserPort.call(body);
 
