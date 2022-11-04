@@ -8,13 +8,11 @@ export class AuthController {
   constructor(readonly createUserPort: ICreateUserPort) {}
 
   @Post("/api/auth/register")
-  async register(request: IncomingMessage, response: ServerResponse) {
+  async register(request: IncomingMessage) {
     const body = await parseBody<IRegisterBody>(request);
     
     const user = await this.createUserPort.call(body);
 
-    response.statusCode = 201;
-    response.write(JSON.stringify({ id: user.id.value }));
-    response.end();
+    return { id: user.id.value };
   }
 }

@@ -4,8 +4,9 @@ export function createRoutes(controllers: any[]) {
   for (const controller of controllers) {
     for (const property in controller) {
       if (typeof controller[property] === "function") {
-        const method = property;
-        routes.set(controller[method].url, { controller, method });
+        const endpoint = property;
+        const { url, successStatusCode } = controller[endpoint];
+        routes.set(url, { controller, endpoint, successStatusCode });
       }
     }
   }
