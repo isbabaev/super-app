@@ -34,9 +34,10 @@ async function handleRoute(
   const { controller, endpoint, successStatusCode } = route;
   try {
     const result = await controller[endpoint].call(controller, request, response);
-    response.statusCode = successStatusCode;
+    response.statusCode = result.statusCode || successStatusCode;
+    delete result.statusCode;
     response.write(JSON.stringify(result));
-  } catch (err) {
+  } catch (error) {
     response.statusCode = 500;
   }
 

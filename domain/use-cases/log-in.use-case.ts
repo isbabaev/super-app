@@ -1,3 +1,4 @@
+import { UserNotFoundException } from "../exceptions/user-not-found.exception";
 import { ILogInPort, IParams } from "../ports/in/log-in.port";
 import { ICreateAuthTokenPort } from "../ports/out/create-auth-token.port";
 import { IFindUserPort } from "../ports/out/find-user.port";
@@ -9,11 +10,10 @@ export class LogInUseCase implements ILogInPort {
     private readonly createAuthTokenPort: ICreateAuthTokenPort
   ) {}
 
-  async call(params: IParams): Promise<AuthToken | null> {
+  async call(params: IParams): Promise<AuthToken> {
     const user = await this.findUserPort.call(params);
     if (!user) {
-      // TODO throw 401 if user is not found
-      return null;
+      throw new UserNotFoundException();
     }
 
     return this.createAuthTokenPort.call(user.id);
