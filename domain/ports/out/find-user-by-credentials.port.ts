@@ -1,6 +1,6 @@
 import { UserEntity } from "../../entities/user.entity";
 
-export interface IFindUserPort {
+export interface IFindUserByCredentialsPort {
   call(params: IParams): Promise<UserEntity | null>;
 }
 

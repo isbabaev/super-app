@@ -4,7 +4,7 @@ import { UsersController } from "./api/controllers/users.controller";
 import { Client } from "pg";
 import { AuthController } from "./api/controllers/auth.controller";
 import { LogInUseCase } from "./domain/use-cases/log-in.use-case";
-import { FindUserAdapter } from "./db/adapters/find-user.adapter";
+import { FindUserByCredentialsAdapter } from "./db/adapters/find-user-by-credentials.adapter";
 import { CreateAuthTokenAdapter } from "./auth-tokens/adapters/create-auth-toke.adapter";
 
 export namespace IOC {
@@ -15,7 +15,7 @@ export namespace IOC {
 
     const authController = new AuthController(
       new LogInUseCase(
-        new FindUserAdapter(dbClient),
+        new FindUserByCredentialsAdapter(dbClient),
         new CreateAuthTokenAdapter()
       )
     );

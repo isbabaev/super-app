@@ -1,8 +1,8 @@
 import { Client } from "pg";
 import { UserEntity } from "../../domain/entities/user.entity";
-import { IFindUserPort, IParams } from "../../domain/ports/out/find-user.port";
+import { IFindUserByCredentialsPort, IParams } from "../../domain/ports/out/find-user-by-credentials.port";
 
-export class FindUserAdapter implements IFindUserPort {
+export class FindUserByCredentialsAdapter implements IFindUserByCredentialsPort {
   constructor(private readonly client: Client) {}
 
   async call(params: IParams): Promise<UserEntity | null> {
