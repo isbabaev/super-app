@@ -1,12 +1,12 @@
-import { Id } from "../../value-objects/id";
+import { Id, FirstName, LastName, Email, Password } from "../../value-objects";
 
 export interface ICreateUserInStoragePort {
   call(params: IParams): Promise<Id>;
 }
 
 export interface IParams {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
+  firstName: FirstName;
+  lastName: LastName;
+  email: Email;
+  password: Password;
 }

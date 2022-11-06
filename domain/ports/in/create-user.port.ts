@@ -1,12 +1,13 @@
 import { UserEntity } from "../../entities/user.entity";
+import { FirstName, LastName, Email, Password } from "../../value-objects";
 
 export interface ICreateUserPort {
   call(params: IParams): Promise<UserEntity>;
 }
 
 export interface IParams {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
+  firstName: FirstName;
+  lastName: LastName;
+  email: Email;
+  password: Password;
 }
