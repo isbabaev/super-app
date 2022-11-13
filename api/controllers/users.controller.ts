@@ -7,7 +7,7 @@ import {
   LastName,
   Password,
 } from "../../domain/value-objects";
-import { Get, Post, Controller } from "../decorators";
+import { Get, Post } from "../decorators";
 import { ICreateUserBody } from "../interfaces/users.interfaces";
 import { parseBody } from "./utils"
 import url from 'url';

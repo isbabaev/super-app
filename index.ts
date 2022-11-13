@@ -1,4 +1,4 @@
-import { createServer } from "./api/server";
+import { Server } from "./api/server";
 import { DbClient } from "./db/client";
 import { IOC } from "./ioc";
 import dotenv from "dotenv";
@@ -13,7 +13,8 @@ import dotenv from "dotenv";
 
   const controllers = IOC.initialize(DbClient.getClient());
 
-  createServer(controllers);
+  const server = new Server(controllers);
+  server.listen();
 })().catch(async (error) => {
   console.log("An error has been occured", error);
   await DbClient.getClient().end();
