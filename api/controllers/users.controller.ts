@@ -7,12 +7,13 @@ import {
   LastName,
   Password,
 } from "../../domain/value-objects";
-import { Post } from "../decorators/post";
+import { Get, Post, Controller } from "../decorators";
 import { ICreateUserBody } from "../interfaces/users.interfaces";
-import { parseBody } from "./utils";
+import { parseBody } from "./utils"
+import url from 'url';
 
 export class UsersController {
-  constructor(readonly createUserPort: ICreateUserPort) {} // TODO make a property private
+  constructor(private readonly createUserPort: ICreateUserPort) {}
 
   @Post("/api/users")
   async createUser(request: IncomingMessage) {
@@ -34,4 +35,12 @@ export class UsersController {
       throw error;
     }
   }
+
+  @Get("/api/users/:id")
+  async getUserById(request: IncomingMessage) {
+    const queryObject = url.parse(request.url!, true).query;
+    console.log(queryObject);
+  }
+
+  // TODO PUT api to change firstName and lastName
 }

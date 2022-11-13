@@ -1,8 +1,12 @@
 import http, { IncomingMessage, ServerResponse } from "node:http";
 import { routes, createRoutes } from "./routes";
+import * as newRoutes from "./new-routes";
+import { parse } from "url";
+import { HttpMethod } from "./interfaces";
 
 export function createServer(controllers: unknown[]) {
   createRoutes(controllers);
+  newRoutes.createRoutes(controllers);
 
   const server = http.createServer(async (request, response) => {
     if (request.method === undefined || request.url === undefined) {
@@ -10,7 +14,13 @@ export function createServer(controllers: unknown[]) {
       response.end("Method and url should be specified");
       return;
     }
+
+    const foundRoute = findRoute(request);
+    console.log("foundRoute", foundRoute);
+
     const url = request.method.concat(":", request.url);
+    const queryObject = parse(request.url!, true).query;
+    console.log(queryObject);
     const route = routes.get(url);
     await handleRoute(route, request, response);
   });
@@ -18,6 +28,36 @@ export function createServer(controllers: unknown[]) {
   server.listen(process.env.SERVER_PORT, () => {
     console.log(`Server is running on port ${process.env.SERVER_PORT}`);
   });
+}
+
+function findRoute(request: IncomingMessage) {
+  console.log("url", request.url!.split("/"));
+  const requestHttpMethod = request.method as HttpMethod;
+  const parts = request.url!.split("/").filter((part) => part !== "");
+  const routes: IRoutes[] = [];
+  for (const { httpMethod, route, controller, endpoint } of newRoutes.routes) {
+    if (requestHttpMethod === httpMethod) {
+      routes.push({
+        httpMethod,
+        route,
+        controller,
+        endpoint,
+      });
+    }
+  }
+
+  for (let i = 0; i < parts.length; i++) {
+    for (let j = 0; j < routes.length; j++) {
+      if (routes[j].route.length === 0) continue;
+      if (parts[i] !== routes[j].route[i]) {
+        const isParameter = routes[j].route[i][0] === ":";
+        if (isParameter) continue;
+        routes[j].route = [];
+      }
+    }
+  }
+
+  return routes.filter((route) => route.route.length > 1);
 }
 
 async function handleRoute(
@@ -33,7 +73,11 @@ async function handleRoute(
 
   const { controller, endpoint, successStatusCode } = route;
   try {
-    const result = await controller[endpoint].call(controller, request, response);
+    const result = await controller[endpoint].call(
+      controller,
+      request,
+      response
+    );
     response.statusCode = result.statusCode || successStatusCode;
     delete result.statusCode;
     response.write(JSON.stringify(result));
@@ -42,4 +86,11 @@ async function handleRoute(
   }
 
   response.end();
+}
+
+interface IRoutes {
+  httpMethod: HttpMethod;
+  route: string[];
+  controller: string;
+  endpoint: string;
 }
