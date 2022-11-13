@@ -12,11 +12,11 @@ export function createRoutes(controllers: any[]) {
         property !== "constructor"
       ) {
         const endpoint = property;
-        const { url, httpMethod }: IEndpoint = controller[endpoint];
+        const { url, httpMethod, successStatusCode }: IEndpoint = controller[endpoint];
 
         const route = url.split("/").filter((part) => part !== "");
 
-        routes.push({ httpMethod, route, controller, endpoint });
+        routes.push({ httpMethod, route, controller, endpoint, successStatusCode });
       }
     }
   }
@@ -29,9 +29,11 @@ interface IRoutes {
   route: string[];
   controller: string;
   endpoint: string;
+  successStatusCode: number;
 }
 
 interface IEndpoint {
   url: string;
   httpMethod: HttpMethod;
+  successStatusCode: number;
 }

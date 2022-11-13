@@ -15,13 +15,7 @@ export function createServer(controllers: unknown[]) {
       return;
     }
 
-    const foundRoute = findRoute(request);
-    console.log("foundRoute", foundRoute);
-
-    const url = request.method.concat(":", request.url);
-    const queryObject = parse(request.url!, true).query;
-    console.log(queryObject);
-    const route = routes.get(url);
+    const route = findRoute(request);
     await handleRoute(route, request, response);
   });
 
@@ -31,17 +25,17 @@ export function createServer(controllers: unknown[]) {
 }
 
 function findRoute(request: IncomingMessage) {
-  console.log("url", request.url!.split("/"));
   const requestHttpMethod = request.method as HttpMethod;
   const parts = request.url!.split("/").filter((part) => part !== "");
   const routes: IRoutes[] = [];
-  for (const { httpMethod, route, controller, endpoint } of newRoutes.routes) {
+  for (const { httpMethod, route, controller, endpoint, successStatusCode } of newRoutes.routes) {
     if (requestHttpMethod === httpMethod) {
       routes.push({
         httpMethod,
         route,
         controller,
         endpoint,
+        successStatusCode,
       });
     }
   }
@@ -57,7 +51,7 @@ function findRoute(request: IncomingMessage) {
     }
   }
 
-  return routes.filter((route) => route.route.length > 1);
+  return routes.find((route) => route.route.length > 1);
 }
 
 async function handleRoute(
@@ -83,6 +77,7 @@ async function handleRoute(
     response.write(JSON.stringify(result));
   } catch (error) {
     response.statusCode = 500;
+    console.log(error)
   }
 
   response.end();
@@ -93,4 +88,5 @@ interface IRoutes {
   route: string[];
   controller: string;
   endpoint: string;
+  successStatusCode: number;
 }
